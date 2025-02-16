@@ -2,7 +2,6 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import time
-import streamlit as st
 import requests
 
 # Page Configuration (MUST BE THE FIRST STREAMLIT COMMAND)
@@ -97,6 +96,7 @@ h2 {
 # URL of the Raspberry Pi Flask server
 PI_SERVER_URL = "http://100.66.211.44:5000/command"
 CAMERA_FEED_URL = "http://100.66.211.44:5000/video_feed"
+CROP_DATA_URL = "http://100.66.211.44:5000/crop_data"  # Endpoint for crop data
 
 # Simulated sensor data function
 def get_sensor_data():
@@ -112,6 +112,14 @@ if "humidity" not in st.session_state:
     st.session_state.humidity = 0
     st.session_state.soil_moisture = 0
 
+# Initialize session state for crop data
+if "crop_data" not in st.session_state:
+    st.session_state.crop_data = {
+        "crop": "None",
+        "humidity": "0%",
+        "soil_moisture": "0%"
+    }
+
 # Update sensor readings (call this once per second)
 def update_sensor_data():
     new_data = get_sensor_data()
@@ -125,15 +133,33 @@ def update_sensor_data():
     st.session_state.humidity = new_data["Humidity"]
     st.session_state.soil_moisture = new_data["Soil Moisture"]
 
+# Fetch crop data from Flask API
+def fetch_crop_data():
+    try:
+        response = requests.get(CROP_DATA_URL)
+        if response.status_code == 200:
+            st.session_state.crop_data = response.json()
+        else:
+            st.error("Failed to fetch crop data from the server.")
+    except requests.exceptions.RequestException:
+        st.error("Could not reach the Raspberry Pi.")
+
 # Auto-refresh sensor data and graphs every 1 second (1000 ms)
 from streamlit_autorefresh import st_autorefresh
 st_autorefresh(interval=1000, key="sensor_update")
 update_sensor_data()
+fetch_crop_data()  # Fetch crop data every second
 
 # Sidebar - Sensor Readings
 st.sidebar.header("📊 Sensor Stats (Auto-updates every 1s)")
 st.sidebar.metric("Humidity (%)", st.session_state.humidity)
 st.sidebar.metric("Soil Moisture", st.session_state.soil_moisture)
+
+# Sidebar - Crop Data
+st.sidebar.header("🌱 Crop Data")
+st.sidebar.write(f"Detected Crop: **{st.session_state.crop_data['crop']}**")
+st.sidebar.write(f"Recommended Humidity: **{st.session_state.crop_data['humidity']}**")
+st.sidebar.write(f"Recommended Soil Moisture: **{st.session_state.crop_data['soil_moisture']}**")
 
 def send_command(command):
     try:
@@ -144,6 +170,9 @@ def send_command(command):
             st.error("Failed to send command.")
     except requests.exceptions.RequestException:
         st.error("Could not reach the Raspberry Pi.")
+
+# Title
+st.title("Remote Car Control Dashboard")
 
 # Main Layout
 col1, col2 = st.columns([3, 1])
@@ -162,8 +191,8 @@ with col2:
         if st.button("⬅️ Left", key="left"):
             send_command("Turning Left")
     with col_center:
-        if st.button("⏹ Stop", key="stop"):
-            send_command("Stopping")
+        if st.button("🌱 Soil", key="stop"):
+            send_command("Lowering Sensor")
     with col_right:
         if st.button("➡️ Right", key="right"):
             send_command("Turning Right")
