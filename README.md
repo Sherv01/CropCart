@@ -56,18 +56,6 @@ This project is a **smart farming car** that uses **machine learning** to detect
 
 ---
 
-## Project Structure
-```
-smart-farming-car/
-├── stream.py # Flask server for camera, crop detection, and motor control
-├── streamlit_app.py # Streamlit dashboard for real-time control and data display
-├── crop_classifier.tflite # TensorFlow Lite model for crop detection
-├── requirements.txt # Python dependencies
-└── README.md # Project documentation
-```
-
----
-
 ## Technologies Used
 - **Hardware**: Raspberry Pi, Pi Camera, Motor Driver, Motors.  
 - **Software**: Flask, Streamlit, TensorFlow Lite, OpenCV.  
