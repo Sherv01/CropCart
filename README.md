@@ -64,8 +64,9 @@ This project is a **smart farming car** that uses **machine learning** to detect
 ---
 
 ## Contributors
-- [Your Name](https://github.com/your-username)  
-- [Team Member Name](https://github.com/team-member-username)  
+- [Shervin Darmanki Farahani](https://github.com/Sherv01/)  
+- Michel Alejandro Herrera Viyella
+- Linda Gao
 
 ---
 
