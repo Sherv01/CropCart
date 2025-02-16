@@ -63,13 +63,6 @@ This project is a **smart farming car** that uses **machine learning** to detect
 
 ---
 
-## Contributors
-- [Shervin Darmanki Farahani](https://github.com/Sherv01/)  
-- Michel Alejandro Herrera Viyella
-- Linda Gao
-
----
-
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
