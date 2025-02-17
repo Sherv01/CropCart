@@ -47,12 +47,12 @@ This project is a **smart farming car** that uses **machine learning** to detect
 ### Installation
 1. Clone the repository.
 2. Set up a virtual environment.
-3. Install dependencies using `pip install -r requirements.txt`.
+3. Install dependencies
 4. Connect the hardware:
    - Attach the Pi Camera to the Raspberry Pi.
    - Connect the motor driver and motors to the GPIO pins as specified in the code.
 5. Run the Flask server on the Raspberry Pi using `python stream.py`.
-6. Run the Streamlit app on your local machine or server using `streamlit run streamlit_app.py`.
+6. Run the Streamlit app on your local machine or server using `streamlit run app.py`.
 
 ---
 
